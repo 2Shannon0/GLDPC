@@ -23,9 +23,9 @@ def read_csv( filename ):
 h_ldpc = read_csv('/home/i17m5/GLDPC/matricies/H_LDPC(32,28).csv')
 h_component = read_csv('/home/i17m5/GLDPC/matricies/H_ham(16,11).csv')
 
-print_matrix(h_component)
+# print_matrix(h_component)
 print('\n\n\n\n')
-print_matrix(h_ldpc)
+# print_matrix(h_ldpc)
 
 
 def create_gldpc_matrix(H_LDPC, H_component):
@@ -66,4 +66,4 @@ H_gldpc = create_gldpc_matrix(h_ldpc, h_component)
 print('\n\n\nМатрица H_GLPDC:')
 print_matrix(H_gldpc)
 
-save_to_csv(H_gldpc, '/home/i17m5/GLDPC/matricies/H_gldpc.csv')
+# save_to_csv(H_gldpc, '/home/i17m5/GLDPC/matricies/H_gldpc.csv')

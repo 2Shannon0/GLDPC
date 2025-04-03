@@ -4,6 +4,8 @@ from bpsk import bpsk_modulation, bpsk_demodulation
 from awgn import awgn_llr
 import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter1d
+from trellis_repo import get_trellis
+from BCJR import BCJRDecoder
 
 from utils import read_csv
 
@@ -18,9 +20,13 @@ N = H.shape[1]
 TITLE = f'Decoding LDPC, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}'
 print('\n',TITLE,'\n')
 
+# Создаем декодер кода компонента
+# Подгуржаем решетку
+trellis1 = get_trellis('/home/i17m5/GLDPC/trellis_binaries/H_ham(16,11)')
+code_component_decoder = BCJRDecoder(trellis1.edg)
+
 # Задаем кодовое слово
 codeword_initial = np.array([0] * N, dtype=int)
-
 
 codeword_modulated = bpsk_modulation(codeword_initial)
 

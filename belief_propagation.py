@@ -4,7 +4,7 @@ from utils import *
 def print_matrix(m):
     for i in range(m.shape[0]):
       for j in range(m.shape[1]):
-          print("{:>15}".format(round(m[i][j], 5)), end=' ')
+          print("{:>3}".format(round(m[i][j], 1)), end=' ')
       print()
 
 class BP:
@@ -15,13 +15,13 @@ class BP:
 
     def decode(self):
       H_gamma = np.copy(self.H).astype(float)
-      # print('\nH_gamma изначально:')
-      # print_matrix(H_gamma)
+      print('\nH_gamma изначально:')
+      print_matrix(H_gamma)
 
       H_q = np.copy(self.H).astype(float)
-      # print('\nH_q изначально:')
-      # print_matrix(H_q)
-      # print('\nllr_in: ', self.L)
+      print('\nH_q изначально:')
+      print_matrix(H_q)
+      print('\nllr_in: ', self.L)
 
       
       out_L = np.zeros(self.H.shape[1])
@@ -32,8 +32,8 @@ class BP:
       for i in range(self.H.shape[0]):
         for j in range(self.H.shape[1]):
           H_q[i,j] = self.H[i,j] * self.L[j]
-      # print('\nH_q после инициализации:')
-      # print_matrix(H_q)
+      print('\nH_q после инициализации:')
+      print_matrix(H_q)
 
       for iter in range(self.maxIter):
         for i in range(self.H.shape[0]):
@@ -41,14 +41,16 @@ class BP:
             if self.H[i,j] == 1:
               indexes = np.setdiff1d(np.nonzero(self.H[i,:]), j)
               H_gamma[i,j] = -np.prod(np.sign(H_q[i,indexes]),dtype=float) * f(np.sum(np.abs(f(np.abs(H_q[i,indexes])))))
-        # print('H_gamma')
-        # print_matrix(H_gamma)
+        print('H_gamma')
+        print_matrix(H_gamma)
 
         for i in range(self.H.shape[0]):
           for j in range(self.H.shape[1]):
             if self.H[i,j] == 1:
               indexes = np.setdiff1d(np.nonzero(self.H[:,j]), i)
               H_q[i,j] = self.L[j] + np.sum(H_gamma[indexes,j])
+        print('H_q')
+        print_matrix(H_q)
 
         for i in range(self.H.shape[1]):
           out_L[i] = self.L[i] +  np.sum(H_gamma[:,i])
