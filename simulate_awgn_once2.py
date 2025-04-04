@@ -31,7 +31,7 @@ codeword_modulated = bpsk_modulation(codeword_initial)
 print(f'Кодовое слово BPSK: {codeword_modulated}\n\n')
 
 #------------------------------------Cоздание входных LLR----------------------------------------------------------------
-snr = 8
+snr = 1
 llr_in, sigma2 = awgn_llr(codeword_modulated, snr)
 print(f'SNR: {snr}. sigma2: {sigma2}')
 

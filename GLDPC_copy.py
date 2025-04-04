@@ -185,7 +185,7 @@ class GLDPC:
                 for j in range(n_ldpc):
                     if self.H_LDPC[i,j] == 1:
                         indexes = np.setdiff1d(np.nonzero(self.H_LDPC[:,j]), i)
-                        H_q[i,j] = L[j] + 0.1*np.sum(H_gamma[indexes,j])
+                        H_q[i,j] = L[j] + np.sum(H_gamma[indexes,j])
             # print('H_q')
             # print_matrix(H_q)
 

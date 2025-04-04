@@ -7,13 +7,13 @@ from scipy.ndimage import gaussian_filter1d
 from trellis_repo import get_trellis
 from BCJR import BCJRDecoder
 from GLDPC import GLDPC
-
+from trellis4decoder import Trellis
 from utils import read_csv
 
 h_ldpc = read_csv('/home/i17m5/GLDPC/matricies/H_LDPC(32,28).csv')
 h_comp = read_csv('/home/i17m5/GLDPC/matricies/H_ham(16,11).csv')
 
-h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_GLDPC.csv')
+h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_4.csv')
 
 ESNO_START = 0
 ESNO_END = 10
@@ -27,7 +27,10 @@ print('\n',TITLE,'\n')
 
 # Создаем декодер кода компонента
 # Подгуржаем решетку
-trellis1 = get_trellis('/home/i17m5/GLDPC/trellis_binaries/H_ham(16,11)')
+# Раскоментить, если нет закэшированной решетки
+trellis1 = Trellis("/home/i17m5/GLDPC/matricies/H_ham(16,11).csv")
+trellis1.build_trellis()
+# trellis1 = get_trellis('/home/i17m5/GLDPC/trellis_binaries/H_ham(16,11)')
 code_component_decoder = BCJRDecoder(trellis1.edg)
 
 # Задаем кодовое слово
@@ -50,7 +53,7 @@ ber = [0] * len(esno_array)
 decoder = GLDPC(
     H_LDPC=h_ldpc,
     H_comp=h_comp,
-    # H_GLDPC=h_gldpc,
+    H_GLDPC=h_gldpc,
     CC_DECODER=code_component_decoder
 )
 
@@ -94,10 +97,10 @@ for (i, esno) in enumerate(esno_array):
 
             print(f"fer = {fer[i]}, ber = {ber[i]}, tests_passed = {tests_passed}")
 
-print("\nRESULTS")
-print(esno_array)
-print(fer)
-print(ber)
+    print("\nRESULTS")
+    print(esno_array)
+    print(fer)
+    print(ber)
 
 fer_smooth = gaussian_filter1d(fer, sigma=2).tolist() # Параметр sigma овечает за то, насколько сильно сглаживать график. При 2 выглядит оптимально
 
@@ -109,4 +112,4 @@ plt.ylabel("FER")
 plt.legend()
 plt.grid(True, which="both", linestyle="--")
 # plt.show()
-plt.savefig(f'/home/i17m5/GLDPC/modeling_results/GLDPC_Ham(16,11)_from_{ESNO_START}_to_{ESNO_END}_2.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'/home/i17m5/GLDPC/modeling_results/GLDPC_Ham(16,11)_from_{ESNO_START}_to_{ESNO_END}_3(без_альфа).png', dpi=300, bbox_inches='tight')
