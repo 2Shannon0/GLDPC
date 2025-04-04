@@ -61,8 +61,8 @@ class BP:
         # print('\n',x_hat)
         if np.sum(np.matmul(x_hat, (self.H.T)) % 2) == 0:
           x = x_hat
-          print("\nОшибки исправлены, кол-во итераций", iter+1)
+          # print("\nОшибки исправлены, кол-во итераций", iter+1)
           # print('\nout_L', out_L)
           return x
-      print("\nКодовое слово не найдено, кол-во итераций", iter+1)
-      print('\nout_L', out_L)
+      # print("\nКодовое слово не найдено, кол-во итераций", iter+1)
+      # print('\nout_L', out_L)

@@ -1,34 +1,25 @@
 import numpy as np
-# from belief_propagation import BP
+from belief_propagation import BP
 from bpsk import bpsk_modulation, bpsk_demodulation
 from awgn import awgn_llr
 import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter1d
 from trellis_repo import get_trellis
 from BCJR import BCJRDecoder
-from GLDPC import GLDPC
 
 from utils import read_csv
-
-h_ldpc = read_csv('/home/i17m5/GLDPC/matricies/H_LDPC(32,28).csv')
-h_comp = read_csv('/home/i17m5/GLDPC/matricies/H_ham(16,11).csv')
-
-h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_GLDPC.csv')
 
 ESNO_START = 0
 ESNO_END = 10
 ESNO_STEP = 0.1
 WRONG_DECODING_NUMBER = 50
-N =h_ldpc.shape[1]
+H = read_csv('/home/i17m5/GLDPC/matricies/H_LDPC(32,28).csv')
+N = H.shape[1]
 
 
-TITLE = f'Decoding GLDPC, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}'
+TITLE = f'Decoding LDPC by SP, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}'
 print('\n',TITLE,'\n')
 
-# Создаем декодер кода компонента
-# Подгуржаем решетку
-trellis1 = get_trellis('/home/i17m5/GLDPC/trellis_binaries/H_ham(16,11)')
-code_component_decoder = BCJRDecoder(trellis1.edg)
 
 # Задаем кодовое слово
 # codeword_initial = np.array([0] * N, dtype=int)
@@ -46,13 +37,6 @@ while round(value, 2) <= ESNO_END:
 # Создаем fer & ber
 fer = [0] * len(esno_array)
 ber = [0] * len(esno_array)
-
-decoder = GLDPC(
-    H_LDPC=h_ldpc,
-    H_comp=h_comp,
-    # H_GLDPC=h_gldpc,
-    CC_DECODER=code_component_decoder
-)
 
 # # Запускаем моделирование
 for (i, esno) in enumerate(esno_array):
@@ -72,7 +56,7 @@ for (i, esno) in enumerate(esno_array):
 
         # Декодированное кодовое слово в бинарном виде
         # codeword_result = bpsk_demodulation(llr_out)
-        codeword_result = decoder.decode(llr_in, sigma2, 20)
+        codeword_result = BP(llr_in, H, 20).decode()
 
 
         # считаем кол-во ошибок
@@ -109,4 +93,4 @@ plt.ylabel("FER")
 plt.legend()
 plt.grid(True, which="both", linestyle="--")
 # plt.show()
-plt.savefig(f'/home/i17m5/GLDPC/modeling_results/GLDPC_Ham(16,11)_from_{ESNO_START}_to_{ESNO_END}_2.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'/home/i17m5/GLDPC/modeling_results/LDPC_by_SP_from_{ESNO_START}_to_{ESNO_END}.png', dpi=300, bbox_inches='tight')

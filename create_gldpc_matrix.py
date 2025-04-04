@@ -66,4 +66,4 @@ H_gldpc = create_gldpc_matrix(h_ldpc, h_component)
 print('\n\n\nМатрица H_GLPDC:')
 print_matrix(H_gldpc)
 
-# save_to_csv(H_gldpc, '/home/i17m5/GLDPC/matricies/H_gldpc.csv')
+save_to_csv(H_gldpc, '/home/i17m5/GLDPC/matricies/H_gldpc.csv')
