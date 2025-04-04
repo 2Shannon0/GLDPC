@@ -1,17 +1,34 @@
 import numpy as np
-from GLDPC import GLDPC
-from utils import read_csv
 
-def print_matrix(m):
-    for i in range(m.shape[0]):
-      for j in range(m.shape[1]):
-          print("{:>3}".format(round(m[i][j], 5)), end=' ')
-      print()
+# Проверочная матрица
+H = np.array([
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1],
+    [0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0]
+])
 
-H_ldpc = read_csv('/home/i17m5/GLDPC/matricies/H_LDPC(32,28).csv')
-H_cc = read_csv('/home/i17m5/GLDPC/matricies/H_ham(16,11).csv')
-H_g = read_csv('/home/i17m5/GLDPC/matricies/H_GLDPC.csv')
-g1 = GLDPC(H_ldpc, H_cc)
+# Используем numpy для поиска решения уравнения H * x = 0
+from sympy import Matrix
+H_sympy = Matrix(H)
+solution = H_sympy.nullspace()
 
-print('\n H_GLDPC целиком')
-print_matrix(g1.H_GLDPC)
+# Получаем решение
+codeword = np.array(solution[0]).flatten()  # Берем первое ненулевое решение
+
+# Проверим, что оно действительно кодовое (H * x = 0)
+# print("Ненулевое кодовое слово:", codeword)
+# check = np.dot(H, codeword) % 2  # Проверим, что H * x = 0 по модулю 2
+# print("Проверка, что оно кодовое (H * x % 2 = 0):", check)
+# codeword=[0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+
+codeword=[0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+
+
+# codeword=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+if np.sum(np.matmul(codeword, (H.T)) % 2) == 0:
+    print("Ненулевое кодовое слово:", codeword)
+else:
+    print("Кодовое слово хуйня")
+
