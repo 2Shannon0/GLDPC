@@ -13,7 +13,7 @@ from utils import read_csv
 h_ldpc = read_csv('/home/i17m5/GLDPC/matricies/H_LDPC(32,28).csv')
 h_comp = read_csv('/home/i17m5/GLDPC/matricies/H_ham(16,11).csv')
 
-h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_4.csv')
+h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_like_example.csv')
 
 ESNO_START = 0
 ESNO_END = 10
@@ -22,7 +22,7 @@ WRONG_DECODING_NUMBER = 50
 N =h_ldpc.shape[1]
 
 
-TITLE = f'Decoding GLDPC, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}'
+TITLE = f'Decoding GLDPC, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}_m_example_cw_1'
 print('\n',TITLE,'\n')
 
 # Создаем декодер кода компонента
@@ -35,7 +35,11 @@ code_component_decoder = BCJRDecoder(trellis1.edg)
 
 # Задаем кодовое слово
 # codeword_initial = np.array([0] * N, dtype=int)
-codeword_initial = np.array([0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+codeword_initial = np.array([0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])#1
+
+# Альтернативное кодовое слово
+# codeword_initial = np.array([0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0])#2
+# codeword_initial=np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
 codeword_modulated = bpsk_modulation(codeword_initial)
 
