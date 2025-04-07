@@ -22,7 +22,7 @@ WRONG_DECODING_NUMBER = 50
 N =h_ldpc.shape[1]
 
 
-TITLE = f'Decoding GLDPC, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}_m_example_cw_1'
+TITLE = f'Decoding GLDPC, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}_m_example_cw_7'
 print('\n',TITLE,'\n')
 
 # Создаем декодер кода компонента
@@ -35,12 +35,16 @@ code_component_decoder = BCJRDecoder(trellis1.edg)
 
 # Задаем кодовое слово
 # codeword_initial = np.array([0] * N, dtype=int)
-codeword_initial = np.array([0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])#1
+# codeword_initial = np.array([0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])#1
 
 # Альтернативное кодовое слово
 # codeword_initial = np.array([0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0])#2
-# codeword_initial=np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+# codeword_initial = np.array([0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) #3
 
+# codeword_initial = np.array([0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]) #4
+# codeword_initial = np.array([0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]) #5
+# codeword_initial = np.array([0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) #6
+codeword_initial = np.array([1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]) #7
 codeword_modulated = bpsk_modulation(codeword_initial)
 
 # Задаем список EsNo
@@ -50,7 +54,6 @@ while round(value, 2) <= ESNO_END:
     esno_array.append(round(value, 2))
     value += ESNO_STEP
 
-# Создаем fer & ber
 fer = [0] * len(esno_array)
 ber = [0] * len(esno_array)
 

@@ -65,7 +65,7 @@ print('codeword_candidat', codeword_candidat)
 if np.sum(np.matmul(codeword_candidat, (H_cc.T)) % 2) == 0:
     print("Верное кодовое слово передано:", codeword_candidat)
 else:
-    print("В декодер передана хуйня")
+    print("В декодер передано не верное слово")
 
 
 decoder = BCJRDecoder(trellis1.edg)
@@ -75,7 +75,7 @@ codeword_candidat2 = bpsk_demodulation(out_llr)
 if np.sum(np.matmul(codeword_candidat2, (H_cc.T)) % 2) == 0:
     print("Декодер докидировал верное кодовое слово своего кода:", codeword_candidat)
 else:
-    print("Декодер вернул хуйню")
+    print("Декодер вернул неверное кодовое")
 
 
 

@@ -13,20 +13,20 @@ ESNO_START = 0
 ESNO_END = 10
 ESNO_STEP = 0.1
 WRONG_DECODING_NUMBER = 50
-H = read_csv('/home/i17m5/GLDPC/matricies/H_LDPC(32,28).csv')
+H = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_1_like_example.csv')
 N = H.shape[1]
 
 
-TITLE = f'Decoding LDPC by SP, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}'
+TITLE = f'Decoding GLDPC by SP, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}'
 print('\n',TITLE,'\n')
 
 
 # Задаем кодовое слово
-# codeword_initial = np.array([0] * N, dtype=int)
+codeword_initial = np.array([0] * N, dtype=int)
 # codeword_initial = np.array([0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
 
 
-codeword_initial = np.array([0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0])
+# codeword_initial = np.array([0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0])
 
 codeword_modulated = bpsk_modulation(codeword_initial)
 

@@ -9,7 +9,7 @@ from GLDPC import GLDPC
 h_ldpc = read_csv('/home/i17m5/GLDPC/matricies/H_LDPC(32,28).csv')
 h_comp = read_csv('/home/i17m5/GLDPC/matricies/H_ham(16,11).csv')
 
-h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_GLDPC.csv')
+h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_1_like_example.csv')
 
 
 
