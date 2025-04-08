@@ -16,6 +16,8 @@ def read_csv( filename ):
                 rows.append(int(symbol))
             symbols.append(rows)
     return np.array(symbols)
+def save_to_csv(matrix, filepath):
+    np.savetxt(filepath, matrix, delimiter=',', fmt='%d')
 
 class GLDPC:
     def __init__(self, H_LDPC, H_comp, H_GLDPC=None, CC_DECODER=None):
@@ -70,6 +72,8 @@ class GLDPC:
 
                 H_gldpc[i * m_comp:(i + 1) * m_comp, j] = H_component[:, selected_columns[k]]
         print('\nH_GLDPC была создана новая\n')
+        save_to_csv(H_gldpc, '/home/i17m5/GLDPC/matricies/Current_H_gldpc.csv')
+
         return H_gldpc
     
     # def create_row_layer_match(self):

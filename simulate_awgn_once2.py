@@ -68,7 +68,7 @@ print(f'Входные LLR: {llr_in}\n\n')
 decoder = GLDPC(
     H_LDPC=h_ldpc,
     H_comp=h_comp,
-    H_GLDPC=h_gldpc,
+    # H_GLDPC=h_gldpc,
     CC_DECODER=code_component_decoder
 )
 decoded_word = decoder.decode(llr_in, sigma2, 1)

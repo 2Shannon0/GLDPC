@@ -14,6 +14,9 @@ def read_csv( filename ):
             symbols.append(rows)
     return np.array(symbols)
 
+def save_to_csv(matrix, filepath):
+    np.savetxt(filepath, matrix, delimiter=',', fmt='%d')
+
 def print_matrix(m):
     for i in range(m.shape[0]):
       for j in range(m.shape[1]):

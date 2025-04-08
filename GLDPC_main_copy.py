@@ -1,4 +1,5 @@
 import numpy as np
+import csv
 from utils import *
 
 def print_matrix(m):
@@ -6,6 +7,20 @@ def print_matrix(m):
       for j in range(m.shape[1]):
           print("{:>5}".format(round(m[i][j], 1)), end=' ')
       print()
+
+def read_csv( filename ):
+    with open( filename, newline='') as f:
+        reader = csv.reader(f)
+        symbols = []
+        for row in reader:
+            rows = []
+            for symbol in row:
+                rows.append(int(symbol))
+            symbols.append(rows)
+    return np.array(symbols)
+
+def save_to_csv(matrix, filepath):
+    np.savetxt(filepath, matrix, delimiter=',', fmt='%d')
 
 class GLDPC:
     def __init__(self, H_LDPC, H_comp, H_GLDPC=None, CC_DECODER=None):
