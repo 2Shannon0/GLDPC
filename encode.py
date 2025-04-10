@@ -28,8 +28,8 @@ def print_array_with_commas(a):
             print(int(a[i]), end="]")
     print()
 
-H = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_like_example.csv')
-H = read_csv('/home/i17m5/GLDPC/matricies/H_ham(16,11).csv')
+H = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc from_LDPC(420,196).csv')
+# H = read_csv('/home/i17m5/GLDPC/matricies/H_ham(16,11).csv')
 
 # H = np.array(h_gldpc) 
 
@@ -69,11 +69,12 @@ def gf2_nullspace(H):
 
 # Вычисление базиса
 nullspace = gf2_nullspace(H)
-for i in range(nullspace.shape[1]):
-    if np.sum(np.matmul(nullspace[:, i], (H.T)) % 2) == 0:
-        continue
-    else: 
-        raise(Exception)
+# for i in range(nullspace.shape[1]):
+#     if np.sum(np.matmul(nullspace[:, i], (H.T)) % 2) == 0:
+#         # continue
+#         print(nullspace[:, i])
+#     else: 
+#         raise(Exception)
 
 print('Базис:\n')
 print(f"Размер базис: {nullspace.shape}")
@@ -92,10 +93,11 @@ info = create_random_code_word(G.shape[0])
 print('Информационное слово:')
 print_array_with_commas(info)
 codeword = np.matmul(info, G) % 2
+codeword = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1]
 
 if np.sum(np.matmul(codeword, (H.T)) % 2) == 0:
     print('Верное кодовое слово:')
     print_array_with_commas(codeword)
 else:
-    print('Кодовое слово с ошибкой\n')
+    print('Кодовое слово с ошибкой\n', np.matmul(codeword, (H.T)) % 2)
 

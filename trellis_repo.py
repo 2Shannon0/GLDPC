@@ -2,8 +2,8 @@ import pickle
 from trellis4decoder import Trellis
 
 
-FILE_PATH = "/home/i17m5/GLDPC/matricies/H_ham(16,11).csv"
-TRELLIS_NAME = "H_ham(16,11)"
+FILE_PATH = "/home/i17m5/GLDPC/matricies/BCH_MATRIX_N_15_K_11_DEFAULT.csv"
+TRELLIS_NAME = "BCH_MATRIX_N_15_K_11_DEFAULT"
 
 
 def save_trellis(file_path, trellis_name):

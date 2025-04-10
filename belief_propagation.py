@@ -56,7 +56,7 @@ class BP:
           out_L[i] = self.L[i] +  np.sum(H_gamma[:,i])
 
         x_hat = np.array(out_L<0, dtype=int)
-
+        # print('Iter: ', iter)
         #ВЫВОДИТЬ КОДОВОЕ СЛОВО НА КАЖДОМ ШАГЕ
         # print('\n',x_hat)
         if np.sum(np.matmul(x_hat, (self.H.T)) % 2) == 0:

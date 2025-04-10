@@ -1,6 +1,14 @@
 import numpy as np
 from utils import read_csv
-h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_like_example.csv')
+def print_array_with_commas(a):
+    print('[', end = '' )
+    for i in range(a.shape[0]):
+        if i != a.shape[0] - 1:
+            print(int(a[i]),end=", ")  
+        else:
+            print(int(a[i]), end="]")
+    print()
+h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc from_LDPC(420,196).csv')
 # h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_2.csv')
 
 
@@ -10,6 +18,13 @@ h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_like_example.csv')
 # codeword_initial = np.array([0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) #6 +
 # codeword_initial = np.array([1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]) #7
 # codeword_initial = np.array([1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0])
-codeword_initial = np.array([0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0])
+codeword_initial = np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1])
 print("Проверка:")
-print(np.matmul(codeword_initial, h_gldpc.T) % 2)
+c1= np.matmul(codeword_initial, h_gldpc.T) % 2
+print_array_with_commas(c1)
+c2 = np.matmul(c1, h_gldpc.T) % 2
+print_array_with_commas(c2)
+c3 = np.matmul(c2, h_gldpc.T) % 2
+print_array_with_commas(c3)
+c4 = np.matmul(c3, h_gldpc.T) % 2
+print_array_with_commas(c4)

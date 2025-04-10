@@ -18,14 +18,14 @@ class GLDPC:
 
         self.row_layer_match = self.create_row_layer_match()
 
-        print('\nH_LDPC')
-        print_matrix(self.H_LDPC)
+        # print('\nH_LDPC')
+        # print_matrix(self.H_LDPC)
 
-        print('\nH_GLDPC')
-        print_matrix(self.H_GLDPC)
+        # print('\nH_GLDPC')
+        # print_matrix(self.H_GLDPC)
 
-        print('\nH_comp')
-        print_matrix(self.H_comp)
+        # print('\nH_comp')
+        # print_matrix(self.H_comp)
 
     def create_gldpc_matrix(self, H_LDPC, H_component):
         m_ldpc, n_ldpc = H_LDPC.shape
@@ -111,7 +111,7 @@ class GLDPC:
             for i in range(n_ldpc):
                 out_L[i] = L[i] +  np.sum(H_gamma[:,i])
             x_hat = np.array(out_L<0, dtype=int)
-
+            # print('iter: ', iter)
             if np.sum(np.matmul(x_hat, (self.H_LDPC.T)) % 2) == 0:
                 x = x_hat
                 return x

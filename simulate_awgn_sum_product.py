@@ -9,15 +9,17 @@ from BCJR import BCJRDecoder
 
 from utils import read_csv
 
-ESNO_START = 0
-ESNO_END = 10
-ESNO_STEP = 0.1
-WRONG_DECODING_NUMBER = 50
-H = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_1_like_example.csv')
+ESNO_START = -4
+ESNO_END = 4
+ESNO_STEP = 0.2
+WRONG_DECODING_NUMBER = 30
+# H = read_csv('/home/i17m5/GLDPC/matricies/LDPC_2080_1760.csv')
+H = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc from_LDPC(420,196).csv')
+
 N = H.shape[1]
 
 
-TITLE = f'Decoding GLDPC by SP, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}'
+TITLE = f'Decoding H_gldpc from_LDPC(420,196) by SP, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}'
 print('\n',TITLE,'\n')
 
 

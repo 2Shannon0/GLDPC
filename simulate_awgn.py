@@ -6,35 +6,36 @@ import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter1d
 from trellis_repo import get_trellis
 from BCJR import BCJRDecoder
+# from GLDPC_debug_copy import GLDPC
 from GLDPC import GLDPC
 from trellis4decoder import Trellis
 from utils import read_csv
 
-h_ldpc = read_csv('/home/i17m5/GLDPC/matricies/H_LDPC(32,28).csv')
-h_comp = read_csv('/home/i17m5/GLDPC/matricies/H_ham(16,11).csv')
+h_ldpc = read_csv('/home/i17m5/GLDPC/matricies/LDPC(420,196).csv')
+h_comp = read_csv('/home/i17m5/GLDPC/matricies/BCH_MATRIX_N_15_K_11_DEFAULT.csv')
 
-h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_like_example.csv')
+h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc from_LDPC(420,196).csv')
 
-ESNO_START = 0
-ESNO_END = 10
-ESNO_STEP = 0.1
-WRONG_DECODING_NUMBER = 50
+ESNO_START = -0.8
+ESNO_END = 4
+ESNO_STEP = 0.2
+WRONG_DECODING_NUMBER = 30
 N =h_ldpc.shape[1]
 
 
-TITLE = f'Decoding GLDPC, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}_m_example_cw_8'
+TITLE = f'Decoding GLDPC, LDPC(420,196) with BCH_MATRIX_N_15_K_11 WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}'
 print('\n',TITLE,'\n')
 
 # Создаем декодер кода компонента
 # Подгуржаем решетку
 # Раскоментить, если нет закэшированной решетки
-trellis1 = Trellis("/home/i17m5/GLDPC/matricies/H_ham(16,11).csv")
+trellis1 = Trellis("/home/i17m5/GLDPC/matricies/BCH_MATRIX_N_15_K_11_DEFAULT.csv")
 trellis1.build_trellis()
 # trellis1 = get_trellis('/home/i17m5/GLDPC/trellis_binaries/H_ham(16,11)')
 code_component_decoder = BCJRDecoder(trellis1.edg)
 
 # Задаем кодовое слово
-# codeword_initial = np.array([0] * N, dtype=int)
+codeword_initial = np.array([0] * N, dtype=int)
 # codeword_initial = np.array([0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])#1
 
 # Альтернативное кодовое слово
@@ -45,7 +46,7 @@ code_component_decoder = BCJRDecoder(trellis1.edg)
 # codeword_initial = np.array([0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]) #5
 # codeword_initial = np.array([0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) #6
 # codeword_initial = np.array([1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]) #7
-codeword_initial = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0]) #8
+# codeword_initial = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0]) #8
 codeword_modulated = bpsk_modulation(codeword_initial)
 
 # Задаем список EsNo
