@@ -5,9 +5,9 @@ from utils import *
 from trellis_repo import get_trellis
 from BCJR import BCJRDecoder
 
-# H = read_csv('/home/i17m5/GLDPC/matricies/H_GLDPC.csv')
-H = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc from_LDPC(420,196).csv')
-# H = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_from_LDPC(2080_1760).csv')
+# H = read_csv('/home/i17m5/GLDPC/matricies/LDPC_2080_1760.csv')
+# H = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc from_LDPC(420,196).csv')
+H = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_from_LDPC(2080_1760).csv')
 
 
 
@@ -30,7 +30,7 @@ codeword_modulated = bpsk_modulation(codeword_initial)
 # print(f'Кодовое слово BPSK: {codeword_modulated}\n\n')
 
 #------------------------------------Cоздание входных LLR----------------------------------------------------------------
-snr = -1
+snr = 0
 llr_in, sigma2 = awgn_llr(codeword_modulated, snr)
 print(f'SNR: {snr}. sigma2: {sigma2}')
 

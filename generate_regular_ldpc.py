@@ -65,14 +65,14 @@ def print_matrix(m):
         print()
 
 
-K = 196
+K = 364
 N = 420
 
 find_possible_weights(N, K)
 
-w_c = 8
+w_c = 2
 w_r = 15
 
 H = generate_gallager_ldpc(K, N, w_c, w_r)
-print_matrix(H)
-save_to_csv(H, './matricies/LDPC(420,196)')
+# print_matrix(H)
+save_to_csv(H, f'./matricies/LDPC_{N}_{K}')

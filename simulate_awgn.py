@@ -11,19 +11,19 @@ from GLDPC import GLDPC
 from trellis4decoder import Trellis
 from utils import read_csv
 
-h_ldpc = read_csv('/home/i17m5/GLDPC/matricies/LDPC(420,196).csv')
+h_ldpc = read_csv('/home/i17m5/GLDPC/matricies/LDPC_420_364.csv')
 h_comp = read_csv('/home/i17m5/GLDPC/matricies/BCH_MATRIX_N_15_K_11_DEFAULT.csv')
 
-h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc from_LDPC(420,196).csv')
+h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_GLDPC_from_LDPC(420,364)_BCH(15,11).csv')
 
-ESNO_START = -0.8
-ESNO_END = 4
+ESNO_START = 5.2
+ESNO_END = 6
 ESNO_STEP = 0.2
 WRONG_DECODING_NUMBER = 30
 N =h_ldpc.shape[1]
 
 
-TITLE = f'Decoding GLDPC, LDPC(420,196) with BCH_MATRIX_N_15_K_11 WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}'
+TITLE = f'Decoding GLDPC, LDPC(420,364) with BCH_MATRIX_N_15_K_11 WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}'
 print('\n',TITLE,'\n')
 
 # Создаем декодер кода компонента
@@ -121,4 +121,4 @@ plt.ylabel("FER")
 plt.legend()
 plt.grid(True, which="both", linestyle="--")
 # plt.show()
-plt.savefig(f'/home/i17m5/GLDPC/modeling_results/GLDPC_Ham(16,11)_from_{ESNO_START}_to_{ESNO_END}_3(без_альфа).png', dpi=300, bbox_inches='tight')
+plt.savefig(f'/home/i17m5/GLDPC/modeling_results/{TITLE}.png', dpi=300, bbox_inches='tight')

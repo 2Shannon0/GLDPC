@@ -9,17 +9,17 @@ from BCJR import BCJRDecoder
 
 from utils import read_csv
 
-ESNO_START = -4
-ESNO_END = 4
+ESNO_START = 5.2
+ESNO_END = 6
 ESNO_STEP = 0.2
 WRONG_DECODING_NUMBER = 30
 # H = read_csv('/home/i17m5/GLDPC/matricies/LDPC_2080_1760.csv')
-H = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc from_LDPC(420,196).csv')
+H = read_csv('/home/i17m5/GLDPC/matricies/H_GLDPC_from_LDPC(420,364)_BCH(15,11).csv')
 
 N = H.shape[1]
 
 
-TITLE = f'Decoding H_gldpc from_LDPC(420,196) by SP, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}'
+TITLE = f'Decoding H_GLDPC_from_LDPC(420,364)_BCH(15,11) by SP, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}'
 print('\n',TITLE,'\n')
 
 
@@ -83,10 +83,10 @@ for (i, esno) in enumerate(esno_array):
 
             print(f"fer = {fer[i]}, ber = {ber[i]}, tests_passed = {tests_passed}")
 
-print("\nRESULTS")
-print(esno_array)
-print(fer)
-print(ber)
+    print("\nRESULTS")
+    print(esno_array)
+    print(fer)
+    print(ber)
 
 fer_smooth = gaussian_filter1d(fer, sigma=2).tolist() # Параметр sigma овечает за то, насколько сильно сглаживать график. При 2 выглядит оптимально
 
@@ -98,4 +98,4 @@ plt.ylabel("FER")
 plt.legend()
 plt.grid(True, which="both", linestyle="--")
 # plt.show()
-plt.savefig(f'/home/i17m5/GLDPC/modeling_results/LDPC_by_SP_from_{ESNO_START}_to_{ESNO_END}.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'/home/i17m5/GLDPC/modeling_results/{TITLE}.png', dpi=300, bbox_inches='tight')
