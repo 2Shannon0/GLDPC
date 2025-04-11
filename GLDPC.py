@@ -1,3 +1,4 @@
+import gldpc_decoder
 import numpy as np
 import csv
 from utils import *
@@ -29,6 +30,8 @@ class GLDPC:
         self.H_GLDPC = H_GLDPC if H_GLDPC is not None else self.create_gldpc_matrix(self.H_LDPC, self.H_comp)
 
         self.row_layer_match = self.create_row_layer_match()
+
+        self.sorted_original_indexes = self.get_sorted_original_indexes()
 
         print('\nH_LDPC')
         print_matrix(self.H_LDPC)
@@ -133,6 +136,22 @@ class GLDPC:
 
         return row_layer_match
 
+    def get_sorted_original_indexes(self):
+        result = []
+        for i in range(len(self.row_layer_match)):
+            result.append(self.row_layer_match[i]['sorted_original_indexes'])
+        return result
+
+    def decode_cpp(self, llr, sigma2, max_iter, use_normalization = True):
+        return gldpc_decoder.decode_gldpc(
+            self.H_LDPC,
+            self.sorted_original_indexes,
+            self.CC_DECODER.edg_bpsk,
+            llr,
+            sigma2,
+            max_iter,
+            use_normalization
+        )
     
     def decode(self, L, sigma2, maxIter):
         m_ldpc, n_ldpc = self.H_LDPC.shape

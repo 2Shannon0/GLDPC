@@ -16,10 +16,10 @@ h_comp = read_csv('/home/i17m5/GLDPC/matricies/H_ham(16,11).csv')
 h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_like_example.csv')
 
 ESNO_START = 0
-ESNO_END = 10
-ESNO_STEP = 0.1
+ESNO_END = 7
+ESNO_STEP = 0.2
 WRONG_DECODING_NUMBER = 50
-N =h_ldpc.shape[1]
+N = h_ldpc.shape[1]
 
 
 TITLE = f'Decoding GLDPC, WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}_m_example_cw_7'
@@ -34,7 +34,7 @@ trellis1.build_trellis()
 code_component_decoder = BCJRDecoder(trellis1.edg)
 
 # Задаем кодовое слово
-# codeword_initial = np.array([0] * N, dtype=int)
+codeword_initial = np.array([0] * N, dtype=int)
 # codeword_initial = np.array([0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])#1
 
 # Альтернативное кодовое слово
@@ -44,7 +44,7 @@ code_component_decoder = BCJRDecoder(trellis1.edg)
 # codeword_initial = np.array([0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]) #4
 # codeword_initial = np.array([0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]) #5
 # codeword_initial = np.array([0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) #6
-codeword_initial = np.array([1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]) #7
+# codeword_initial = np.array([1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]) #7
 codeword_modulated = bpsk_modulation(codeword_initial)
 
 # Задаем список EsNo
@@ -82,8 +82,7 @@ for (i, esno) in enumerate(esno_array):
 
         # Декодированное кодовое слово в бинарном виде
         # codeword_result = bpsk_demodulation(llr_out)
-        codeword_result = decoder.decode(llr_in, sigma2, 20)
-
+        codeword_result = decoder.decode_cpp(llr_in, sigma2, 10, False)
 
         # считаем кол-во ошибок
         errors = 0
@@ -118,5 +117,5 @@ plt.xlabel("EsNo")
 plt.ylabel("FER")
 plt.legend()
 plt.grid(True, which="both", linestyle="--")
-# plt.show()
-plt.savefig(f'/home/i17m5/GLDPC/modeling_results/GLDPC_Ham(16,11)_from_{ESNO_START}_to_{ESNO_END}_3(без_альфа).png', dpi=300, bbox_inches='tight')
+plt.show()
+# plt.savefig(f'/home/i17m5/GLDPC/modeling_results/GLDPC_Ham(16,11)_from_{ESNO_START}_to_{ESNO_END}_3(без_альфа).png', dpi=300, bbox_inches='tight')
