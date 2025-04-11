@@ -46,7 +46,6 @@ codeword_initial = np.array([0] * N, dtype=int)
 # codeword_initial = np.array([0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]) #5
 # codeword_initial = np.array([0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) #6
 # codeword_initial = np.array([1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]) #7
-# codeword_initial = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0]) #8
 codeword_modulated = bpsk_modulation(codeword_initial)
 
 # Задаем список EsNo
@@ -84,8 +83,7 @@ for (i, esno) in enumerate(esno_array):
 
         # Декодированное кодовое слово в бинарном виде
         # codeword_result = bpsk_demodulation(llr_out)
-        codeword_result = decoder.decode(llr_in, sigma2, 20)
-
+        codeword_result = decoder.decode_cpp(llr_in, sigma2, 10, False)
 
         # считаем кол-во ошибок
         errors = 0
@@ -122,3 +120,5 @@ plt.legend()
 plt.grid(True, which="both", linestyle="--")
 # plt.show()
 plt.savefig(f'/home/i17m5/GLDPC/modeling_results/{TITLE}.png', dpi=300, bbox_inches='tight')
+plt.show()
+# plt.savefig(f'/home/i17m5/GLDPC/modeling_results/GLDPC_Ham(16,11)_from_{ESNO_START}_to_{ESNO_END}_3(без_альфа).png', dpi=300, bbox_inches='tight')
