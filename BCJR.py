@@ -1,4 +1,3 @@
-import gldpc_decoder
 from copy import deepcopy
 import mpmath as mp
 from util import gfn_array_to_str
@@ -16,10 +15,14 @@ class BCJRDecoder:
 
         self.edg_bpsk = deepcopy(self.edg)
         self.make_edges_with_bpsk()
-        self.convert_nodes_from_gfn_to_str()
 
-    def decode_cpp(self, llr_in, sigma2, use_normalization = False):
-        return gldpc_decoder.decode_bcjr(self.edg_bpsk, llr_in, sigma2, use_normalization)
+        for i in range(len(self.edg)):
+            for j in range(len(self.edg[i])):
+                prev_vex = gfn_array_to_str(self.edg[i][j][0])
+                next_vex = gfn_array_to_str(self.edg[i][j][2])
+
+                self.edg[i][j] = (prev_vex, int(self.edg[i][j][1]), next_vex)
+                self.edg_bpsk[i][j] = (prev_vex, self.edg_bpsk[i][j][1], next_vex)
 
     def decode(self, llr_in, sigma2):
         a_priori = 0.5
@@ -134,12 +137,3 @@ class BCJRDecoder:
         for i in range(len(self.edg_bpsk)):
             for j in range(len(self.edg_bpsk[i])):
                 self.edg_bpsk[i][j] = (self.edg_bpsk[i][j][0], -2 * int(self.edg_bpsk[i][j][1]) + 1, self.edg_bpsk[i][j][2])
-
-    def convert_nodes_from_gfn_to_str(self):
-        for i in range(len(self.edg)):
-            for j in range(len(self.edg[i])):
-                prev_vex = gfn_array_to_str(self.edg[i][j][0])
-                next_vex = gfn_array_to_str(self.edg[i][j][2])
-
-                self.edg[i][j] = (prev_vex, int(self.edg[i][j][1]), next_vex)
-                self.edg_bpsk[i][j] = (prev_vex, self.edg_bpsk[i][j][1], next_vex)

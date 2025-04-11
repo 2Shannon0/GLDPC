@@ -21,14 +21,14 @@ class GLDPC:
 
         self.sorted_original_indexes = self.get_sorted_original_indexes()
 
-        print('\nH_LDPC')
-        print_matrix(self.H_LDPC)
+        # print('\nH_LDPC')
+        # print_matrix(self.H_LDPC)
 
-        print('\nH_GLDPC')
-        print_matrix(self.H_GLDPC)
+        # print('\nH_GLDPC')
+        # print_matrix(self.H_GLDPC)
 
-        print('\nH_comp')
-        print_matrix(self.H_comp)
+        # print('\nH_comp')
+        # print_matrix(self.H_comp)
 
 
 
@@ -93,6 +93,7 @@ class GLDPC:
 
     def decode_cpp(self, llr, sigma2, max_iter, use_normalization = True):
         return gldpc_decoder.decode_gldpc(
+            self.H_GLDPC,
             self.H_LDPC,
             self.sorted_original_indexes,
             self.CC_DECODER.edg_bpsk,
@@ -119,7 +120,11 @@ class GLDPC:
             for i in range(m_ldpc):
                 sorted_indexes = self.row_layer_match[i]['sorted_original_indexes']
                 llr_in_layer_decoder = H_q[i, sorted_indexes]
+                # print("llr_in_layer_decoder:", llr_in_layer_decoder)
+
                 llr_from_layer_decoder = self.CC_DECODER.decode(llr_in_layer_decoder, sigma2)
+                # print('llr by BCJR decoder:\n', llr_from_layer_decoder)
+
                 H_gamma[i, sorted_indexes] = llr_from_layer_decoder - llr_in_layer_decoder
 
             # Шаг 2 – передача сообщений от символьных узлов проверочным
@@ -133,7 +138,23 @@ class GLDPC:
             for i in range(n_ldpc):
                 out_L[i] = L[i] +  np.sum(H_gamma[:,i])
             x_hat = np.array(out_L<0, dtype=int)
-            # print('iter: ', iter)
-            if np.sum(np.matmul(x_hat, (self.H_LDPC.T)) % 2) == 0:
+            print('СИНДРОМ G: ', np.matmul(x_hat, (self.H_GLDPC.T)))
+            print('СИНДРОМ G % 2: ', np.matmul(x_hat, (self.H_GLDPC.T)) % 2)
+            print('SUM(СИНДРОМ G % 2): ', np.sum(np.matmul(x_hat, (self.H_GLDPC.T)) % 2))
+
+            # print('СИНДРОМ: ', np.matmul(x_hat, (self.H_LDPC.T)))
+            # print('СИНДРОМ % 2: ', np.matmul(x_hat, (self.H_LDPC.T)) % 2)
+            # print('СИНДРОМ % 2: ', np.matmul(x_hat, (self.H_GLDPC.T)) % 2)
+
+
+            
+            if np.sum(np.matmul(x_hat, (self.H_GLDPC.T))% 2) == 0:
                 x = x_hat
+                print("\nХОРОШО Ошибки исправлены, кол-во итераций", iter+1)
+                print('\nout_L', out_L)
                 return x
+        print("\nКодовое слово не найдено, кол-во итераций", iter+1)
+        print('\nout_L', out_L)
+        return np.array(out_L<0, dtype=int)
+        
+
