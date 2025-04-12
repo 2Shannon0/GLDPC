@@ -112,6 +112,6 @@ class GLDPC:
                 out_L[i] = L[i] +  np.sum(H_gamma[:,i])
             x_hat = np.array(out_L<0, dtype=int)
             # print('iter: ', iter)
-            if np.sum(np.matmul(x_hat, (self.H_LDPC.T)) % 2) == 0:
+            if np.sum(np.matmul(x_hat, (self.H_GLDPC.T)) % 2) == 0:
                 x = x_hat
                 return x
