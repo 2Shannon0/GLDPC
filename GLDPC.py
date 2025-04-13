@@ -1,3 +1,5 @@
+import gldpc_decoder
+import gldpc_decoder_fix_iter
 import numpy as np
 from utils import *
 
@@ -17,6 +19,8 @@ class GLDPC:
         self.H_GLDPC = H_GLDPC if H_GLDPC is not None else self.create_gldpc_matrix(self.H_LDPC, self.H_comp)
 
         self.row_layer_match = self.create_row_layer_match()
+
+        self.sorted_original_indexes = self.get_sorted_original_indexes()
 
         # print('\nH_LDPC')
         # print_matrix(self.H_LDPC)
@@ -79,6 +83,39 @@ class GLDPC:
 
         return row_layer_match
 
+    def get_sorted_original_indexes(self):
+        result = []
+        for i in range(len(self.row_layer_match)):
+            result.append(self.row_layer_match[i]['sorted_original_indexes'])
+        return result
+
+    def decode_cpp(self, llr_in, sigma2, max_iter, use_normalization = True, fix_iter = False):
+        def bcjr_decode(llr):
+            return self.CC_DECODER.decode(llr, sigma2, use_normalization)
+        if fix_iter:
+            return gldpc_decoder_fix_iter.decode_gldpc(
+                bcjr_decode,
+                self.H_GLDPC,
+                self.H_LDPC,
+                self.sorted_original_indexes,
+                self.CC_DECODER.edg_bpsk,
+                llr_in,
+                sigma2,
+                max_iter,
+                use_normalization
+            )
+        else:
+            return gldpc_decoder.decode_gldpc(
+                bcjr_decode,
+                self.H_GLDPC,
+                self.H_LDPC,
+                self.sorted_original_indexes,
+                self.CC_DECODER.edg_bpsk,
+                llr_in,
+                sigma2,
+                max_iter,
+                use_normalization
+            )
     
     def decode(self, L, sigma2, maxIter):
         m_ldpc, n_ldpc = self.H_LDPC.shape

@@ -16,14 +16,14 @@ h_comp = read_csv('/home/i17m5/GLDPC/matricies/BCH_MATRIX_N_15_K_11_DEFAULT.csv'
 
 h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_GLDPC_from_LDPC(420,364)_BCH(15,11).csv')
 
-ESNO_START = 3.05
-ESNO_END = 3.15
-ESNO_STEP = 0.1
+ESNO_START = 3
+ESNO_END = 3
+ESNO_STEP = 0.05
 WRONG_DECODING_NUMBER = 120
 N =h_ldpc.shape[1]
 
 
-TITLE = f'Decoding GLDPC, LDPC(420,364) with BCH_MATRIX_N_15_K_11 WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END} 20 maxiter'
+TITLE = f'Decoding GLDPC, LDPC(420,364) with BCH_MATRIX_N_15_K_11 WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END} 1 fix iter c'
 print('\n',TITLE,'\n')
 
 # Создаем декодер кода компонента
@@ -85,7 +85,13 @@ for (i, esno) in enumerate(esno_array):
 
         # Декодированное кодовое слово в бинарном виде
         # codeword_result = bpsk_demodulation(llr_out)
-        codeword_result = decoder.decode(llr_in, sigma2, 20)
+        codeword_result_py = decoder.decode(llr_in, sigma2, 3) # np.array([0] * N, dtype=int)
+        codeword_result = decoder.decode(llr_in, sigma2, 3)
+        # codeword_result = decoder.decode_cpp(llr_in=llr_in, sigma2=sigma2, max_iter=3, fix_iter=True)
+
+        if not np.array_equal(codeword_result_py, codeword_result):
+            print(np.equal(codeword_result_py, codeword_result))
+            break
 
 
         # считаем кол-во ошибок
