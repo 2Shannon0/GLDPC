@@ -91,18 +91,23 @@ class GLDPC:
             result.append(self.row_layer_match[i]['sorted_original_indexes'])
         return result
 
-    def decode_cpp(self, llr, sigma2, max_iter, use_normalization = True):
+    def decode_cpp(self, llr_in, sigma2, max_iter, use_normalization = True):
+        def bcjr_decode(llr):
+            return self.CC_DECODER.decode(llr, sigma2, use_normalization)
+
+
         return gldpc_decoder.decode_gldpc(
+            bcjr_decode,
             self.H_GLDPC,
             self.H_LDPC,
             self.sorted_original_indexes,
             self.CC_DECODER.edg_bpsk,
-            llr,
+            llr_in,
             sigma2,
             max_iter,
             use_normalization
         )
-    
+
     def decode(self, L, sigma2, maxIter):
         m_ldpc, n_ldpc = self.H_LDPC.shape
         H_gamma = np.copy(self.H_LDPC).astype(float)

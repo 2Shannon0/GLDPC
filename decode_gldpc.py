@@ -6,10 +6,10 @@ from GLDPC import GLDPC
 from trellis4decoder import Trellis
 from utils import read_csv
 
-h_ldpc = read_csv('/home/i17m5/GLDPC/matricies/LDPC_420_364.csv')
-h_comp = read_csv('/home/i17m5/GLDPC/matricies/BCH_MATRIX_N_15_K_11_DEFAULT.csv')
-h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_ALEXEI.csv')
-trellis1 = Trellis("/home/i17m5/GLDPC/matricies/BCH_MATRIX_N_15_K_11_DEFAULT.csv")
+h_ldpc = read_csv('/Users/aleksejbandukov/Documents/python/GLDPC/matricies/LDPC_420_364.csv')
+h_comp = read_csv('/Users/aleksejbandukov/Documents/python/GLDPC/matricies/BCH_MATRIX_N_15_K_11_DEFAULT.csv')
+h_gldpc = read_csv('/Users/aleksejbandukov/Documents/python/GLDPC/matricies/H_gldpc_ALEXEI.csv')
+trellis1 = Trellis("/Users/aleksejbandukov/Documents/python/GLDPC/matricies/BCH_MATRIX_N_15_K_11_DEFAULT.csv")
 # h_ldpc = read_csv('/home/i17m5/GLDPC/matricies/H_LDPC(32,28).csv')
 # h_comp = read_csv('/home/i17m5/GLDPC/matricies/H_ham(16,11).csv')
 # h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_1_like_example.csv')
@@ -31,7 +31,7 @@ decoder = GLDPC(
     CC_DECODER=code_component_decoder
 )
 
-llr_in, sigma2 = awgn_llr(codeword_modulated, 4)
+llr_in, sigma2 = awgn_llr(codeword_modulated, 15)
 print('sigma2: ', sigma2)
 
 print("Python")
@@ -51,7 +51,7 @@ print("\nC++")
 c_decoder_word = decoder.decode_cpp(llr_in, sigma2, 2)
 print(c_decoder_word)
 
-print(np.equal(c_decoder_word, python_decoder_word))
+print("Слова полностью совпадают", np.all(c_decoder_word == python_decoder_word))
 
 # print(np.equal(codeword_initial, python_decoder_word))
 

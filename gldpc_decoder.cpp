@@ -1,5 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <pybind11/functional.h>
 #include <iostream>
 #include <vector>
 #include <unordered_map>
@@ -181,6 +182,7 @@ vector<double> decode_bcjr_precise(
 }
 
 vector<double> decode_bcjr(
+    function<vector<double>(vector<double>)> python_callback,
     const vector<vector<tuple<string, int, string>>> &edg_bpsk,
     const vector<double> &llr_in,
     double sigma2,
@@ -215,11 +217,12 @@ vector<double> decode_bcjr(
             string next_vex = get<2>(gammas[i][j]);
 
             long double diff = pow(llr_in[i] - edge_value, 2) / (2 * sigma2);
-            long double cur_gamma = constant_coef * safe_exp(-diff);
+            long double cur_gamma = constant_coef * exp(-diff);
 
-            // if (cur_gamma == 0) {
-            //     return decode_bcjr_precise(edg_bpsk, llr_in, sigma2, useNormalization);
-            // }
+             // В случае слишком маленьких значений запускаем питоновский бкдр
+             if (cur_gamma == 0) {
+                 return python_callback(llr_in);
+             }
 
             gammas[i][j] = make_tuple(prev_vex, cur_gamma, next_vex);
             long double new_alpha = cur_gamma * alphas[i][prev_vex];
@@ -260,7 +263,7 @@ vector<double> decode_bcjr(
             }
         }
 
-        llr_out[i] = static_cast<double>(safe_log(up / down));
+        llr_out[i] = static_cast<double>(log(up / down));
 
 
         if (useNormalization) {
@@ -276,6 +279,7 @@ vector<double> decode_bcjr(
 }
 
 vector<int> decode_gldpc(
+    function<vector<double>(vector<double>)> python_callback,
     const vector<vector<int>>& H_GLDPC,
     const vector<vector<int>>& H_LDPC,
     const vector<vector<int>>& sorted_original_indexes,
@@ -310,6 +314,7 @@ vector<int> decode_gldpc(
             }
 
             vector<double> llr_from_layer_decoder = decode_bcjr(
+                python_callback,
                 edg_bpsk,
                 llr_in_layer_decoder,
                 sigma2,
@@ -352,16 +357,20 @@ vector<int> decode_gldpc(
         }
 
         // Syndrome check
-        cout << "СИНДРОМ:" << std::endl;
-        printVecInt(multiply_vector_matrix(x_hat, H_T));
+//        cout << "СИНДРОМ:" << std::endl;
+//        printVecInt(multiply_vector_matrix(x_hat, H_T));
+
         if (is_zero_mod2(multiply_vector_matrix(x_hat, H_T))) {
-            cout << "ХОРОШО" << std::endl;
-            printVec(llr_out);
+//            cout << "ХОРОШО" << std::endl;
+//            printVec(llr_out);
+
             return x_hat;
         }
     }
-    cout << "ПЛОХО" << std::endl;
-    printVec(llr_out);
+
+//    cout << "ПЛОХО" << std::endl;
+//    printVec(llr_out);
+
     return x_hat;
 }
 

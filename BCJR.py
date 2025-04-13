@@ -24,7 +24,7 @@ class BCJRDecoder:
                 self.edg[i][j] = (prev_vex, int(self.edg[i][j][1]), next_vex)
                 self.edg_bpsk[i][j] = (prev_vex, self.edg_bpsk[i][j][1], next_vex)
 
-    def decode(self, llr_in, sigma2):
+    def decode(self, llr_in, sigma2, use_normalization = True):
         a_priori = 0.5
 
         '''
@@ -68,10 +68,11 @@ class BCJRDecoder:
                     alphas[i + 1][next_vex] = new_alpha
 
             # Normalization
-            summa = sum(alphas[i + 1].values())
-            if summa != 0:
-                for key in alphas[i + 1].keys():
-                    alphas[i + 1][key] /= summa
+            if use_normalization:
+                summa = sum(alphas[i + 1].values())
+                if summa != 0:
+                    for key in alphas[i + 1].keys():
+                        alphas[i + 1][key] /= summa
 
         '''
         BACKWARD
@@ -126,10 +127,11 @@ class BCJRDecoder:
                 llr_out[i] = mp.ln(up / down)
 
             # Normalization beta
-            summa = sum(betas[i].values())
-            if summa != 0:
-                for key in betas[i].keys():
-                    betas[i][key] /= summa
+            if use_normalization:
+                summa = sum(betas[i].values())
+                if summa != 0:
+                    for key in betas[i].keys():
+                        betas[i][key] /= summa
 
         return llr_out
 
