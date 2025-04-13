@@ -16,14 +16,14 @@ h_comp = read_csv('/home/i17m5/GLDPC/matricies/BCH_MATRIX_N_15_K_11_DEFAULT.csv'
 
 h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_GLDPC_from_LDPC(420,364)_BCH(15,11).csv')
 
-ESNO_START = 3.75
-ESNO_END = 4.05
+ESNO_START = 3.05
+ESNO_END = 3.15
 ESNO_STEP = 0.1
-WRONG_DECODING_NUMBER = 60
+WRONG_DECODING_NUMBER = 120
 N =h_ldpc.shape[1]
 
 
-TITLE = f'Decoding GLDPC, LDPC(420,364) with BCH_MATRIX_N_15_K_11 WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}'
+TITLE = f'Decoding GLDPC, LDPC(420,364) with BCH_MATRIX_N_15_K_11 WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END} 20 maxiter'
 print('\n',TITLE,'\n')
 
 # Создаем декодер кода компонента
@@ -90,12 +90,9 @@ for (i, esno) in enumerate(esno_array):
 
         # считаем кол-во ошибок
         errors = 0
-        if codeword_result is None:
-            errors+=1
-        else:
-            for j in range(N):
-                if codeword_result[j] != codeword_initial[j]:
-                    errors += 1
+        for j in range(N):
+            if codeword_result[j] != codeword_initial[j]:
+                errors += 1
 
         # если ошибки есть, то считаем fer & ber
         if errors != 0:

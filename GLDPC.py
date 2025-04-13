@@ -85,7 +85,7 @@ class GLDPC:
         H_gamma = np.copy(self.H_LDPC).astype(float)
         H_q = np.copy(self.H_LDPC).astype(float)
         out_L = np.zeros(n_ldpc)
-
+        H_T = self.H_GLDPC.T
         # Шаг 0 – инициализация значений, пришедших из канала
         for i in range(m_ldpc):
             for j in range(n_ldpc):
@@ -112,6 +112,9 @@ class GLDPC:
                 out_L[i] = L[i] +  np.sum(H_gamma[:,i])
             x_hat = np.array(out_L<0, dtype=int)
             # print('iter: ', iter)
-            if np.sum(np.matmul(x_hat, (self.H_GLDPC.T)) % 2) == 0:
+            if np.sum(np.matmul(x_hat, (H_T)) % 2) == 0:
                 x = x_hat
                 return x
+        # x_hat = np.array(out_L<0, dtype=int)
+        # print(x_hat)
+        return x_hat
