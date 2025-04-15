@@ -313,13 +313,7 @@ vector<int> decode_gldpc(
                 llr_in_layer_decoder.push_back(H_q[i][idx]);
             }
 
-            vector<double> llr_from_layer_decoder = decode_bcjr(
-                python_callback,
-                edg_bpsk,
-                llr_in_layer_decoder,
-                sigma2,
-                useNormalization
-            );
+            vector<double> llr_from_layer_decoder = python_callback(llr_in_layer_decoder);
 
             for (size_t k = 0; k < sorted_indexes.size(); k++) {
                 int j = sorted_indexes[k];

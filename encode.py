@@ -28,7 +28,7 @@ def print_array_with_commas(a):
             print(int(a[i]), end="]")
     print()
 
-H = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc_from_LDPC(2080_1760).csv')
+H = read_csv('/home/i17m5/GLDPC/matricies/H_GLDPC_from_LDPC(420,364)_perm_1_BCH(15,11).csv')
 # H = read_csv('/home/i17m5/GLDPC/matricies/H_ham(16,11).csv')
 
 # H = np.array(h_gldpc) 
