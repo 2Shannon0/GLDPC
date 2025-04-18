@@ -64,5 +64,6 @@ class BP:
           # print("\nОшибки исправлены, кол-во итераций", iter+1)
           # print('\nout_L', out_L)
           return x
+      return x_hat
       # print("\nКодовое слово не найдено, кол-во итераций", iter+1)
       # print('\nout_L', out_L)

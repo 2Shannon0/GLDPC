@@ -2,6 +2,7 @@ import numpy as np
 # from belief_propagation import BP
 from bpsk import bpsk_modulation, bpsk_demodulation
 from awgn import awgn_llr
+from awgn_complex import awgn_llr_complex
 import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter1d
 from trellis_repo import get_trellis
@@ -16,15 +17,15 @@ h_comp = read_csv('/home/i17m5/GLDPC/matricies/BCH_MATRIX_N_15_K_11_DEFAULT.csv'
 
 h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_GLDPC_from_LDPC(420,364)_perm_1_BCH(15,11).csv')
 
-ESNO_START = 4.2
-ESNO_END = 4.6
+ESNO_START = 0.8
+ESNO_END = 1.2
 ESNO_STEP = 0.2
 WRONG_DECODING_NUMBER = 120
 N =h_ldpc.shape[1]
 
-iter_number = 2
+iter_number = 4
 
-TITLE = f'Decoding GLDPC_perm_1, LDPC(420,364)_perm_1 with BCH_MATRIX_N_15_K_11 WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}; {iter_number} iter; с; nonzerocode'
+TITLE = f'Decoding GLDPC, LDPC(420,364)_perm_1 with BCH_MATRIX_N_15_K_11 WRONG_DECODING_NUMBER = {WRONG_DECODING_NUMBER}, ESNO_END = {ESNO_END}; {iter_number} iter; с; nonzerocode'
 print('\n',TITLE,'\n')
 
 # Создаем декодер кода компонента
@@ -71,28 +72,17 @@ for (i, esno) in enumerate(esno_array):
         tests_passed += 1
 
         # Для заданного отношения сигнал-шум считаем llr
-        llr_in, sigma2 = awgn_llr(codeword_modulated, esno)
-
-        # llr после декодирования
-        # llr_out = BP(llr_in, H, 20)
-
+        llr_in, sigma2 = awgn_llr_complex(codeword_modulated, esno)
 
         # Декодированное кодовое слово в бинарном виде
-        # codeword_result = bpsk_demodulation(llr_out)
-        # codeword_result_py = decoder.decode(llr_in, sigma2, 1) # np.array([0] * N, dtype=int)
         codeword_result = decoder.decode_cpp(llr_in, sigma2, iter_number)
-        # codeword_result = decoder.decode_cpp(llr_in=llr_in, sigma2=sigma2, max_iter=3, fix_iter=True)
-
-        # if not np.array_equal(codeword_result_py, codeword_result):
-        #     print(np.equal(codeword_result_py, codeword_result))
-        #     break
-
 
         # считаем кол-во ошибок
         errors = 0
         for j in range(N):
             if codeword_result[j] != codeword_initial[j]:
                 errors += 1
+        # errors = np.sum(codeword_result != codeword_initial)
 
         # если ошибки есть, то считаем fer & ber
         if errors != 0:

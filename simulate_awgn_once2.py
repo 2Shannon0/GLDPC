@@ -1,5 +1,7 @@
 from bpsk import bpsk_modulation, bpsk_demodulation
 from awgn import awgn_llr
+from awgn_complex import awgn_llr_complex
+
 # from belief_propagation import BP
 from utils import *
 from trellis_repo import get_trellis
@@ -8,10 +10,10 @@ from BCJR import BCJRDecoder
 from GLDPC import GLDPC
 
 
-h_ldpc = read_csv('/home/i17m5/GLDPC/matricies/LDPC(420,196).csv')
+h_ldpc = read_csv('/home/i17m5/GLDPC/matricies/LDPC_420_364.csv')
 h_comp = read_csv('/home/i17m5/GLDPC/matricies/BCH_MATRIX_N_15_K_11_DEFAULT.csv')
 
-h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_gldpc from_LDPC(420,196).csv')
+h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_GLDPC_from_LDPC(420,364)_BCH(15,11).csv')
 
 
 
@@ -24,8 +26,9 @@ N = h_ldpc.shape[1]
 trellis1 = get_trellis('/home/i17m5/GLDPC/trellis_binaries/BCH_MATRIX_N_15_K_11_DEFAULT')
 code_component_decoder = BCJRDecoder(trellis1.edg)
 
-codeword_initial = np.array([0] * N, dtype=int)
+# codeword_initial = np.array([0] * N, dtype=int)
 # codeword_initial = np.array([0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+codeword_initial = np.array([1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0])
 
 print(f'Кодовое слово: {codeword_initial}\n\n')
 
@@ -33,8 +36,9 @@ codeword_modulated = bpsk_modulation(codeword_initial)
 print(f'Кодовое слово BPSK: {codeword_modulated}\n\n')
 
 #------------------------------------Cоздание входных LLR----------------------------------------------------------------
-snr = -2
+snr = 1
 llr_in, sigma2 = awgn_llr(codeword_modulated, snr)
+# llr_in, sigma2 = awgn_llr_complex(codeword_modulated, snr)
 print(f'SNR: {snr}. sigma2: {sigma2}')
 
 # для запуска с конкретными LLR:
