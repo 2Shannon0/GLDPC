@@ -17,8 +17,8 @@ h_comp = read_csv('/home/i17m5/GLDPC/matricies/BCH_MATRIX_N_15_K_11_DEFAULT.csv'
 
 h_gldpc = read_csv('/home/i17m5/GLDPC/matricies/H_GLDPC_from_LDPC(420,364)_perm_1_BCH(15,11).csv')
 
-ESNO_START = 0.8
-ESNO_END = 1.2
+ESNO_START = 1.6
+ESNO_END = 1.8
 ESNO_STEP = 0.2
 WRONG_DECODING_NUMBER = 120
 N =h_ldpc.shape[1]
